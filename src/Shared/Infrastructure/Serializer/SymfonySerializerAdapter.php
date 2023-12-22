@@ -19,6 +19,6 @@ final class SymfonySerializerAdapter implements Serializer
 
     public function execute(Format $format, array $data): string
     {
-        return $this->serializer->serialize($data, strtolower(Format::XML->name), ['xml_format_output' => true]);
+        return $this->serializer->serialize($data, strtolower($format->name), ['xml_format_output' => true]);
     }
 }
