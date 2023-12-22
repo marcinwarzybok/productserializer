@@ -12,10 +12,25 @@ final class Money
         private readonly Precision $precision
     ) {}
 
+    public function getCurrency(): Currency
+    {
+        return $this->currency;
+    }
+
+    public function getPrice(): Price
+    {
+        return $this->price;
+    }
+
+    public function getPrecision(): Precision
+    {
+        return $this->precision;
+    }
+
     public function add(Money $money): Money
     {
-        if (!$this->isSameCurrency($money) || !$this->isSamePrecision($money)) {
-            throw new \InvalidArgumentException('Cannot add price with non-consistent currency/precision');
+        if (!$this->canAddMoney($money)) {
+            throw new \InvalidArgumentException('Cannot add price');
         }
 
         return new self(
@@ -41,20 +56,13 @@ final class Money
 
         return true;
     }
-
-    public function getCurrency(): Currency
+    /**
+     * @param Money $money
+     * @return bool
+     */
+    private function canAddMoney(Money $money): bool
     {
-        return $this->currency;
-    }
-
-    public function getPrice(): Price
-    {
-        return $this->price;
-    }
-
-    public function getPrecision(): Precision
-    {
-        return $this->precision;
+        return $this->isSameCurrency($money) && $this->isSamePrecision($money);
     }
 
     /**
